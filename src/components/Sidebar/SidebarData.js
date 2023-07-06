@@ -3,56 +3,18 @@ import * as FaIcons from 'react-icons/fa';
 
 export const SidebarData = [
     {
-        title: "Ana Sayfa",
-        icon: <FaIcons.FaHome />,
-        link: "/"
+        title: "Tablolar",
+        icon: <FaIcons.FaTable />,
+        link: "/projects/:id",
     },
     {
-        title: "Çalışanlar",
-        icon: <FaIcons.FaUserAlt />,
-        submenu: [
-            {
-                title: "Tüm Çalışanlar",
-                icon: <FaIcons.FaWindowRestore />,
-                link: "/calisanlar",
-            },
-            {
-                title: "Yeni Çalışan",
-                icon: <FaIcons.FaPlusSquare />,
-                link: "/yeni-calisan",
-            }
-        ]
+        title: "Endpointler",
+        icon: <FaIcons.FaLink />,
+        link: "/projects/:id/endpoints"
     },
     {
-        title: "İzinler",
-        icon: <FaIcons.FaListAlt />,
-        submenu: [
-            {
-                title: "Tüm İzinler",
-                icon: <FaIcons.FaWindowRestore />,
-                link: "/izinler",
-            },
-            {
-                title: "Yeni İzin",
-                icon: <FaIcons.FaPlusSquare />,
-                link: "/yeni-izin",
-            }
-        ]
+        title: "Tüm Projelere Dön",
+        icon: <FaIcons.FaArrowLeft />,
+        link: "/projects"
     },
-    {
-        title: "Harcamalar",
-        icon: <FaIcons.FaListAlt />,
-        submenu: [
-            {
-                title: "Tüm Harcamalar",
-                icon: <FaIcons.FaWindowRestore />,
-                link: "/harcamalar",
-            },
-            {
-                title: "Yeni Harcama",
-                icon: <FaIcons.FaPlusSquare />,
-                link: "/yeni-harcama",
-            }
-        ]
-    }
 ]

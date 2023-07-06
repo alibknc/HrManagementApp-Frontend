@@ -1,141 +1,118 @@
 import axios from "axios";
-import Moment from 'moment';
 
-export async function createNewEmployee(data) {
-    Moment.locale('en');
+export async function getAllProjects(userId) {
+    try {
+        const response = await axios.get(`http://localhost:8080/projects?userId=${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
+}
 
+export async function createProject(userId, title) {
     const request = {
-        "name": data.name,
-        "surname": data.surname,
-        "identityNumber": data.identityNumber,
-        "birth-date": Moment(data.birthDate).format('DD/MM/YYYY'),
-        "jobInfo": {
-            "department": data.department,
-            "level": data.level,
-            "position": data.position,
-            "workType": data.workType,
-            "salary": parseInt(data.salary),
-            "start-date": Moment(data.startDate).format('DD/MM/YYYY')
-        },
-        "contactInfo": {
-            "phoneNumber": data.phoneNumber,
-            "email": data.email,
-            "city": data.city,
-            "country": data.country,
-            "address": data.address,
-            "postCode": parseInt(data.postCode)
-        }
+        "userId": userId,
+        "title": title,
     }
 
-    const response = await axios.post("http://localhost:8080/api/v1/employees", request)
+    const response = await axios.post("http://localhost:8080/projects", request)
     return response.status
-
 }
 
-export async function getAllEmployees() {
-    const response = await axios.get("http://localhost:8080/api/v1/employees")
-    return response.data;
+export async function getAllTables(projectId) {
+    try {
+        const response = await axios.get(`http://localhost:8080/tables?id=${projectId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
 }
 
-export async function getAllExpenses() {
-    const response = await axios.get("http://localhost:8080/api/v1/expenses")
-
-    response.data.map((item, index) => {
-        switch (item['expenseType']) {
-            case "FOOD":
-                item['expenseType'] = "YEMEK"
-                break;
-            case "EDUCATION":
-                item['expenseType'] = "EĞİTİM"
-                break;
-            case "TRANSPORT":
-                item['expenseType'] = "ULAŞIM"
-                break;
-            case "HEALTH":
-                item['expenseType'] = "SAĞLIK"
-                break;
-            case "OTHER":
-                item['expenseType'] = "DİĞER"
-                break;
-            default:
-                break;
-        }
-        return true
-    })
-
-    return response.data;
+export async function getTable(projectId, name) {
+    try {
+        const response = await axios.get(`http://localhost:8080/tables/content?projectId=${projectId}&tableName=${name}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
 }
 
-export async function getAllPermits() {
-    const response = await axios.get("http://localhost:8080/api/v1/permits")
+export async function createTable(projectId, title, columns) {
+    title = title.trim()
+    title = title.toLowerCase()
+    title = title.replace(/[^a-zA-Z0-9]/g, '');
+    title = title.replaceAll(' ', '_')
 
-    response.data.map((item, index) => {
-        switch (item['permitType']) {
-            case "ANNUAL":
-                item['permitType'] = "YILLIK"
-                break;
-            case "FREE":
-                item['permitType'] = "ÜCRETSİZ"
-                break;
-            case "MATERNITY":
-                item['permitType'] = "DOĞUM"
-                break;
-            case "OTHER":
-                item['permitType'] = "DİĞER"
-                break;
-            default:
-                break;
-        }
-        return true
-    })
-
-    return response.data;
-}
-
-export async function createNewPermit(data) {
-    Moment.locale('en');
-
-    const request = {
-        "permitType": data.permitType,
-        "start-date": Moment(data.startDate).format('DD/MM/YYYY'),
-        "finish-date": Moment(data.finishDate).format('DD/MM/YYYY'),
-        "details": data.details,
-        "employeeId": data.employeeId
+    for(var i=0; i<columns.length; i++){
+        var element = columns[i].columnName
+        element = element.trim()
+        element = element.toLowerCase()
+        element = element.replace(/[^a-zA-Z0-9]/g, '');
+        element = element.replaceAll(' ', '_')
+        columns[i].columnName = element;
     }
 
-    const response = await axios.post("http://localhost:8080/api/v1/permits", request)
-    return response.status
-
-}
-
-export async function createNewExpense(data) {
-    Moment.locale('en');
-
     const request = {
-        "expenseType": data.expenseType,
-        "expenseAmount": data.expenseAmount,
-        "expense-date": Moment(data.expenseDate).format('DD/MM/YYYY'),
-        "vat": data.vat,
-        "details": data.details,
-        "employeeId": data.employeeId
+        "projectId": projectId,
+        "title": title,
+        "columns": columns
     }
 
-    const response = await axios.post("http://localhost:8080/api/v1/expenses", request)
+    const response = await axios.post("http://localhost:8080/tables", request)
     return response.status
-
 }
 
-export async function deleteEmployee(id) {
-    const response = await axios.delete("http://localhost:8080/api/v1/employees/" + id)
-    return response.status;
+export async function getEnpoints(projectId) {
+    try {
+        const response = await axios.get(`http://localhost:8080/endpoint/list?projectId=${projectId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
 }
 
-export async function deletePermit(id) {
-    const response = await axios.delete("http://localhost:8080/api/v1/permits/" + id)
-    return response.status;
+export async function getApiKey(projectId) {
+    try {
+        const response = await axios.get(`http://localhost:8080/projects/api-key?projectId=${projectId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
 }
 
-export async function deleteExpense(id) {
-    const response = await axios.delete("http://localhost:8080/api/v1/expenses/" + id)
-    return response.status;
+export async function getProjectContent(projectId) {
+    let data = {}
+
+    try {
+        data = await getAllTables(projectId);
+
+        const content = []
+
+        for (const i in data.tables) {
+            try {
+                content.push(await getTable(projectId, data.tables[i]));
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        }
+
+        data.tables = content;
+        return data;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+    }
+}
+
+export async function createEndpoint(table, type, query, url, projectId, userId) {
+    const request = {
+        "type": type,
+        "query": query,
+        "url": url,
+        "table": table,
+        "projectId": projectId,
+        "userId": userId
+    }
+
+    const response = await axios.post("http://localhost:8080/endpoint/create", request)
+    return response.status
 }

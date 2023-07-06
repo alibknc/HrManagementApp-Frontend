@@ -1,10 +1,3 @@
-body {
-    background: #4da09d;
-    background: -webkit-linear-gradient(to right, #42d3d8, #4da09d);
-    background: linear-gradient(to right, #42d3d8, #4da09d);
-    color: #000;
-}
-
 .main-content {
     padding-left: 250px;
 }
